@@ -8,20 +8,19 @@ and calls the subsystems in the main loop.
 """
 import pygame
 import entitytypes
+import colours
 import movement
 
 class World(object):
     """Represent and manage the 'world' of the sim."""
-    def __init__(self, size_x, size_y, entities=None, systems=None, max_e=1000):
+    def __init__(self, size_x, size_y, entities=[], systems=[], max_e=1000):
         self.x = size_x
         self.y = size_y
         self.max_entities = max_e
-        self.entities = []
-        self.systems = []
+        self.entities = entities
+        self.systems = systems
 
-        self.display_init()
-
-    def new_entity(self, entity_type, fname, pos="random"):
+    def new_entity(self, entity_type, pos="random"):
         """Add a new entity of selected type to world entity list"""
         if len(self.entities) < self.max_entities:
             new = getattr(entitytypes, entity_type)
@@ -51,8 +50,23 @@ class World(object):
 
     def update(self):
         """Call systems on entity list and update display"""
-        for system in self.systems:
-            system.update(self.entities)
+        #for system in self.systems:
+        #    system.update(self.entities)
+        movement.update(self.entities)
+
+        self.display.fill(colours.black)
         self.render()
         self.clock.tick(20)
         pygame.display.flip()
+
+    def run(self):
+        """Run update method in a loop and scan for input"""
+        self.display_init()
+        while not self.exit:
+            # Check for user input; move this into separate method later
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.exit = True # Leave main loop
+            self.update()
+        # Destroy pygame window
+        pygame.display.quit()
