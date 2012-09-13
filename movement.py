@@ -36,17 +36,17 @@ def update(entity_list):
     their destination
     """
     for entity in entity_list:
-        # If no destination, pick a new random one
-        if entity["dest"] == None:
-            entity["dest"] = random_pos(100, 100)
-        
         # Only moveable entities should have the dest field
         if "dest" in entity:
+            # If no destination, pick a new random one
+            if entity["dest"] == None:
+                entity["dest"] = random_pos(100, 100)
+            
             # Move one step towards destination
             cpos = entity["position"]
             dest = entity["dest"]
             entity["position"] = move(cpos, dest) 
 
-        # Clear destination if it has been reached
-        if entity["dest"] == entity["position"]:
-            entity["dest"] = None
+            # Clear destination if it has been reached
+            if entity["dest"] == entity["position"]:
+                entity["dest"] = None

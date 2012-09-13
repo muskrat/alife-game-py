@@ -1,0 +1,12 @@
+# Creature definitions for alife sim. These are parsed to Python dicts
+# by the creatureloader
+
+amoeba:
+    position: null
+    dest:     null
+    colour:   [255, 0, 0]
+    speed:    1
+
+plant:
+    position: null
+    colour:   [0, 255, 0]
